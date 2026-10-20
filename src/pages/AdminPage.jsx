@@ -112,7 +112,7 @@ export default function AdminPage() {
           Vælg en backupfil (fx fra OneDrive). Du ser først, hvad der vil ske, og intet overskrives uden din
           bekræftelse.
         </p>
-        <input ref={fileRef} type="file" accept=".json,application/json" className="hidden" onChange={onFile} />
+        <input ref={fileRef} type="file" className="hidden" onChange={onFile} />
         <Button variant="outline" onClick={() => fileRef.current?.click()} disabled={busy}>
           <Upload className="mr-2 h-4 w-4" /> Vælg backupfil
         </Button>
