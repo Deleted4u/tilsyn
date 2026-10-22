@@ -4,6 +4,8 @@ import { useSyncExternalStore } from "react";
 const KEY = "tilsyn-plus-settings";
 const DEFAULTS = {
   darkMode: false, // udgangspunkt: fra
+  hacker: false, // hacker mode: fra
+  hackerUnlocked: false, // skjult: låses op med 7 tryk på overskriften "Indstillinger"
   timestamp: true, // tidsstempel på billeder: til
   nameStamp: true, // navnestempel på billeder: til
 };
@@ -25,11 +27,13 @@ export function getSettings() {
 }
 
 export function applyTheme() {
-  const dark = !!state.darkMode;
+  const hacker = !!state.hacker && !!state.hackerUnlocked;
+  const dark = !!state.darkMode || hacker; // hacker mode er også mørkt
   document.documentElement.classList.toggle("dark", dark);
+  document.documentElement.classList.toggle("hacker", hacker);
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", dark ? "#0a0a0a" : "#ffffff");
+  if (meta) meta.setAttribute("content", hacker ? "#000000" : dark ? "#0a0a0a" : "#ffffff");
 }
 
 export function updateSettings(patch) {
