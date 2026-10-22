@@ -131,14 +131,27 @@ export default function ReportForm({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-4">
             <div className="min-w-0 space-y-2">
               <Label htmlFor="date">Dato</Label>
-              <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+              <Input
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+                className="block w-full min-w-0 max-w-full appearance-none text-center"
+              />
             </div>
             <div className="min-w-0 space-y-2">
               <Label htmlFor="time">Tidspunkt</Label>
-              <Input id="time" type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+              <Input
+                id="time"
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className="block w-full min-w-0 max-w-full appearance-none text-center"
+              />
             </div>
           </div>
         </div>
