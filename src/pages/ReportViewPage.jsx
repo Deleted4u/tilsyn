@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, DatabaseBackup, FileText, Hash, Loader2, MapPin, Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Building2,
+  Calendar,
+  DatabaseBackup,
+  FileText,
+  Hash,
+  Loader2,
+  MapPin,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BlobImage from "@/components/BlobImage";
 import FileActions from "@/components/FileActions";
 import { deleteReport, friendlyError, getReport } from "@/lib/db";
 import { buildReportPdf } from "@/lib/pdf";
 import { buildBackup } from "@/lib/backup";
-import { formatDate, formatTimestamp, safeFileName } from "@/lib/format";
+import { formatDate, safeFileName, stampText } from "@/lib/format";
+import { useSettings } from "@/lib/settings";
 
 export default function ReportViewPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const settings = useSettings();
   const [report, setReport] = useState(undefined); // undefined = indlæser, null = findes ikke
   const [error, setError] = useState("");
 
@@ -62,7 +75,7 @@ export default function ReportViewPage() {
     }
   };
 
-  const baseName = safeFileName(`Tilsyn ${report.title} ${report.date}`);
+  const baseName = safeFileName(`Tilsyn ${report.name || report.title} ${report.date}`);
 
   return (
     <div className="space-y-10">
@@ -90,6 +103,11 @@ export default function ReportViewPage() {
       <div>
         <h1 className="text-3xl font-semibold tracking-tight">{report.title}</h1>
         <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
+          {report.name && (
+            <span className="inline-flex items-center gap-1.5">
+              <Building2 className="h-3.5 w-3.5" /> {report.name}
+            </span>
+          )}
           <span className="inline-flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5" />
             {formatDate(report.date)}
@@ -123,19 +141,22 @@ export default function ReportViewPage() {
           <p className="text-sm text-muted-foreground">Ingen billeder i denne rapport.</p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {report.images.map((img) => (
-              <div key={img.id} className="space-y-3 rounded-2xl border border-border bg-card p-3">
-                <div className="relative overflow-hidden rounded-xl bg-muted">
-                  <BlobImage blob={img.blob} className="w-full object-cover" />
-                  {report.timestamp_enabled && img.timestamp && (
-                    <span className="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-0.5 text-xs text-white">
-                      {formatTimestamp(img.timestamp)}
-                    </span>
-                  )}
+            {report.images.map((img) => {
+              const stamp = stampText({ name: report.name, timestamp: img.timestamp }, settings);
+              return (
+                <div key={img.id} className="space-y-3 rounded-2xl border border-border bg-card p-3">
+                  <div className="relative overflow-hidden rounded-xl bg-muted">
+                    <BlobImage blob={img.blob} className="w-full object-cover" />
+                    {stamp && (
+                      <span className="absolute bottom-2 left-2 max-w-[80%] truncate rounded bg-black/60 px-2 py-0.5 text-xs text-white">
+                        {stamp}
+                      </span>
+                    )}
+                  </div>
+                  {img.comment && <p className="whitespace-pre-wrap px-1 text-sm">{img.comment}</p>}
                 </div>
-                {img.comment && <p className="whitespace-pre-wrap px-1 text-sm">{img.comment}</p>}
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -146,7 +167,10 @@ export default function ReportViewPage() {
           <FileActions
             label="Lav PDF"
             icon={FileText}
-            build={async () => ({ blob: await buildReportPdf(report), filename: `${baseName}.pdf` })}
+            build={async () => ({
+              blob: await buildReportPdf(report, { timestamp: settings.timestamp, nameStamp: settings.nameStamp }),
+              filename: `${baseName}.pdf`,
+            })}
           />
         </div>
         <div className="space-y-3 border-t border-border pt-6">

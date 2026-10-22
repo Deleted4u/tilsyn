@@ -4,7 +4,6 @@ import { ArrowLeft, DatabaseBackup, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FileActions from "@/components/FileActions";
 import LocalDataNotice from "@/components/LocalDataNotice";
-import QuickComments from "@/components/QuickComments";
 import { analyzeBackup, applyImport, buildBackup } from "@/lib/backup";
 import { friendlyError } from "@/lib/db";
 import { todayIso } from "@/lib/format";
@@ -25,7 +24,7 @@ export default function AdminPage() {
   const [storage, setStorage] = useState(null);
 
   useEffect(() => {
-    document.title = "Backup og kommentarer";
+    document.title = "Backup";
     (async () => {
       try {
         const est = await navigator.storage?.estimate?.();
@@ -88,8 +87,8 @@ export default function AdminPage() {
       </Link>
 
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Backup og kommentarer</h1>
-        <p className="mt-1 text-muted-foreground">Del rapporter mellem enheder og administrér hurtige kommentarer.</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Backup</h1>
+        <p className="mt-1 text-muted-foreground">Del rapporter mellem enheder og lav sikkerhedskopier.</p>
       </div>
 
       <LocalDataNotice showLink={false} />
@@ -112,7 +111,7 @@ export default function AdminPage() {
           Vælg en backupfil (fx fra OneDrive). Du ser først, hvad der vil ske, og intet overskrives uden din
           bekræftelse.
         </p>
-        <input ref={fileRef} type="file" className="hidden" onChange={onFile} />
+        <input ref={fileRef} type="file" accept=".json,application/json" className="hidden" onChange={onFile} />
         <Button variant="outline" onClick={() => fileRef.current?.click()} disabled={busy}>
           <Upload className="mr-2 h-4 w-4" /> Vælg backupfil
         </Button>
@@ -169,14 +168,6 @@ export default function AdminPage() {
             </Link>
           </div>
         )}
-      </section>
-
-      <section className="space-y-4 rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-xl font-semibold tracking-tight">Hurtige kommentarer</h2>
-        <p className="text-sm text-muted-foreground">
-          Korte standardtekster, som du kan trykke ind i et billedes kommentar.
-        </p>
-        <QuickComments />
       </section>
 
       {storage && (

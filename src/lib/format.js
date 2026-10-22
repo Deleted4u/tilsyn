@@ -14,6 +14,14 @@ export function formatTimestamp(iso) {
   return `${d} ${t}`;
 }
 
+// Tekst på billedstemplet ud fra indstillingerne (navn og/eller tidsstempel).
+export function stampText({ name, timestamp }, settings) {
+  const parts = [];
+  if (settings?.nameStamp && name) parts.push(name);
+  if (settings?.timestamp && timestamp) parts.push(formatTimestamp(timestamp));
+  return parts.join(" · ");
+}
+
 export function safeFileName(s) {
   const clean = String(s || "")
     .replace(/[\\/:*?"<>|]+/g, " ")

@@ -5,6 +5,7 @@ import NewReportPage from "@/pages/NewReportPage";
 import EditReportPage from "@/pages/EditReportPage";
 import ReportViewPage from "@/pages/ReportViewPage";
 import AdminPage from "@/pages/AdminPage";
+import SettingsPage from "@/pages/SettingsPage";
 
 function NotFound() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="reports/admin" element={<AdminPage />} />
           <Route path="reports/:id" element={<ReportViewPage />} />
           <Route path="reports/:id/edit" element={<EditReportPage />} />
+          <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
