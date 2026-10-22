@@ -77,6 +77,38 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* Hacker mode: kommer efter .dark, så den vinder. Sort skærm, grøn terminal-tekst. */
+  .hacker {
+    --background: 0 0% 1.5%;
+    --foreground: 135 100% 58%;
+    --card: 135 40% 3.5%;
+    --card-foreground: 135 100% 58%;
+    --popover: 135 40% 3.5%;
+    --popover-foreground: 135 100% 58%;
+    --primary: 135 100% 50%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 135 40% 8%;
+    --secondary-foreground: 135 100% 58%;
+    --muted: 135 40% 8%;
+    --muted-foreground: 135 55% 42%;
+    --accent: 135 40% 10%;
+    --accent-foreground: 135 100% 65%;
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 135 70% 18%;
+    --input: 135 70% 18%;
+    --ring: 135 100% 50%;
+    --radius: 0.2rem;
+    --font-heading: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-body: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-display: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .hacker h1,
+  .hacker h2 {
+    text-shadow: 0 0 10px hsl(135 100% 50% / 0.45);
+  }
 }
 
 @layer base {
