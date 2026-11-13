@@ -99,6 +99,7 @@ export async function getReport(id) {
         id: ref.id,
         comment: ref.comment || "",
         timestamp: ref.timestamp || "",
+        section: ref.section || "",
         blob: rec.blob,
         persisted: true,
       });
@@ -126,7 +127,12 @@ export async function putReport(record, images) {
     }
     reports.put({
       ...record,
-      images: images.map((i) => ({ id: i.id, comment: i.comment || "", timestamp: i.timestamp || "" })),
+      images: images.map((i) => ({
+        id: i.id,
+        comment: i.comment || "",
+        timestamp: i.timestamp || "",
+        section: i.section || "",
+      })),
     });
   } catch (e) {
     try {

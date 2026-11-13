@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { TYPES, TYPE_KEYS } from "@/lib/reportTypes";
 import QuickComments from "@/components/QuickComments";
 import { updateSettings, useSettings } from "@/lib/settings";
 
@@ -95,7 +98,7 @@ export default function SettingsPage() {
         >
           Indstillinger
         </h1>
-        <p className="mt-1 text-muted-foreground">Udseende, billedstempler og hurtige kommentarer.</p>
+        <p className="mt-1 text-muted-foreground">Udseende, billedstempler, profil og hurtige kommentarer.</p>
       </div>
 
       <section className="rounded-2xl border border-border bg-card px-6">
@@ -130,6 +133,71 @@ export default function SettingsPage() {
             checked={settings.nameStamp}
             onChange={(v) => updateSettings({ nameStamp: v })}
           />
+        </div>
+      </section>
+
+      <section className="space-y-4 rounded-2xl border border-border bg-card p-6">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight">Standardrapport</h2>
+          <p className="text-sm text-muted-foreground">Den rapporttype, der åbner, når du trykker “Ny rapport”.</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {TYPE_KEYS.map((k) => {
+            const { Icon, title } = TYPES[k];
+            const active = settings.defaultType === k;
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => updateSettings({ defaultType: k })}
+                aria-pressed={active}
+                className={
+                  "flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-sm transition-colors " +
+                  (active
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:bg-accent")
+                }
+              >
+                <Icon className="h-5 w-5" />
+                <span className="text-center leading-tight">{title}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="space-y-4 rounded-2xl border border-border bg-card p-6">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight">Profil</h2>
+          <p className="text-sm text-muted-foreground">
+            Bruges i Cloud Konfig-filen. Gemmes kun på denne enhed og kommer ikke med i backup.
+          </p>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="p-firm">Firma</Label>
+          <Input id="p-firm" value={settings.profileFirm} onChange={(e) => updateSettings({ profileFirm: e.target.value })} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="p-customer">Kunde</Label>
+          <Input
+            id="p-customer"
+            value={settings.profileCustomer}
+            onChange={(e) => updateSettings({ profileCustomer: e.target.value })}
+          />
+        </div>
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="p-initials">Dine initialer</Label>
+            <Input
+              id="p-initials"
+              value={settings.profileInitials}
+              onChange={(e) => updateSettings({ profileInitials: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="p-name">Dit navn</Label>
+            <Input id="p-name" value={settings.profileName} onChange={(e) => updateSettings({ profileName: e.target.value })} />
+          </div>
         </div>
       </section>
 

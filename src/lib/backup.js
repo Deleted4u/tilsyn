@@ -27,6 +27,7 @@ export async function buildBackup({ ids = null } = {}) {
         id: im.id,
         comment: im.comment,
         timestamp: im.timestamp,
+        section: im.section || "",
         type: im.blob.type || "image/jpeg",
         data: await blobToBase64(im.blob),
       });
@@ -66,6 +67,7 @@ function toImages(list, regenerateIds) {
     id: regenerateIds ? newId() : im.id || newId(),
     comment: im.comment || "",
     timestamp: im.timestamp || "",
+    section: im.section || "",
     blob: base64ToBlob(im.data || "", im.type || "image/jpeg"),
   }));
 }

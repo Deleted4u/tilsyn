@@ -8,6 +8,12 @@ const DEFAULTS = {
   hackerUnlocked: false, // skjult: låses op med 7 tryk på overskriften "Indstillinger"
   timestamp: true, // tidsstempel på billeder: til
   nameStamp: true, // navnestempel på billeder: til
+  defaultType: "tilsyn", // rapporttype der åbner som standard: tilsyn / cloud / el
+  // Profil (bruges i Cloud Konfig-Excel-filen)
+  profileFirm: "", // Installationsfirma
+  profileCustomer: "", // Kunde
+  profileInitials: "", // Elektriker: initialer
+  profileName: "", // Elektriker: navn
 };
 
 function load() {

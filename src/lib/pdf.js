@@ -2,6 +2,7 @@
 import { jsPDF } from "jspdf";
 import { formatDate, stampText } from "./format";
 import { blobToDataUrl } from "./image";
+import { EL_INFO_LABEL, EL_ITEMS } from "./reportTypes";
 
 function loadImage(url) {
   return new Promise((resolve, reject) => {
@@ -99,6 +100,38 @@ export async function buildReportPdf(report, opts = {}) {
   doc.line(M, y, PW - M, y);
   y += 5;
 
+  // TilsynEL: kontrolpunkter øverst (OK eller ikke afkrydset)
+  const el = report.type === "el" ? report.el || {} : null;
+  if (el) {
+    write("Kontrolpunkter", { size: 12, bold: true, lh: 6 });
+    const row = (label, ok) => {
+      ensure(7);
+      doc.setDrawColor(90);
+      doc.setLineWidth(0.3);
+      doc.rect(M, y + 1, 4.5, 4.5);
+      if (ok) {
+        doc.setLineWidth(0.7);
+        doc.line(M + 0.9, y + 3.6, M + 1.9, y + 4.8);
+        doc.line(M + 1.9, y + 4.8, M + 3.8, y + 1.9);
+        doc.setLineWidth(0.3);
+      }
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(0);
+      doc.text(label, M + 8, y + 4.5);
+      doc.setFont("helvetica", ok ? "bold" : "normal");
+      doc.setTextColor(ok ? 0 : 130);
+      doc.text(ok ? "OK" : "Ikke afkrydset", PW - M, y + 4.5, { align: "right" });
+      y += 7;
+    };
+    row(`${EL_INFO_LABEL} (læst)`, !!el.infoOk);
+    for (const it of EL_ITEMS) row(it.label, !!el.items?.[it.key]?.ok);
+    y += 3;
+    doc.setDrawColor(220);
+    doc.line(M, y, PW - M, y);
+    y += 5;
+  }
+
   // Samlet kommentar
   if (report.comment) {
     write("Kommentar", { size: 12, bold: true, lh: 6 });
@@ -108,7 +141,8 @@ export async function buildReportPdf(report, opts = {}) {
 
   // Billeder: billede til venstre, kommentar til højre, i en svag ramme.
   // Side 1 har plads til 1 billede, fra side 2 er der 2 billeder pr. side.
-  const images = report.images || [];
+  const allImages = report.images || [];
+  let imgNo = 0;
   const GAP = 5;
   const PAD = 3;
   const LABEL_H = 5;
@@ -118,8 +152,9 @@ export async function buildReportPdf(report, opts = {}) {
   const TEXT_W = CW - TEXT_X_OFFSET - PAD;
   const INNER_MAX = SLOT_H - PAD * 2 - LABEL_H;
 
-  for (let i = 0; i < images.length; i++) {
-    const im = images[i];
+  const drawImages = async (list) => {
+   for (const im of list) {
+    imgNo++;
     const p = await prepareImage(im.blob);
     const scale = Math.min(IMG_MAX_W / p.w, INNER_MAX / p.h);
     const dw = p.w * scale;
@@ -160,7 +195,7 @@ export async function buildReportPdf(report, opts = {}) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.setTextColor(120);
-    doc.text(`Billede ${i + 1}`, M + PAD, y + PAD + 3);
+    doc.text(`Billede ${imgNo}`, M + PAD, y + PAD + 3);
 
     // Billede
     const ix = M + PAD;
@@ -196,6 +231,29 @@ export async function buildReportPdf(report, opts = {}) {
 
     y += boxH + GAP;
     onPage++;
+   }
+  };
+
+  if (el) {
+    for (const it of EL_ITEMS) {
+      const text = el.items?.[it.key]?.text;
+      const list = allImages.filter((i) => i.section === it.key);
+      if (!text && list.length === 0) continue;
+      ensure(40);
+      write(it.label, { size: 11, bold: true, lh: 6 });
+      if (text) write(text, { size: 10, lh: 5 });
+      y += 2;
+      await drawImages(list);
+    }
+    const general = allImages.filter((i) => !i.section);
+    if (general.length > 0) {
+      ensure(40);
+      write("Øvrige billeder", { size: 11, bold: true, lh: 6 });
+      y += 2;
+      await drawImages(general);
+    }
+  } else {
+    await drawImages(allImages);
   }
 
   // Sidetal

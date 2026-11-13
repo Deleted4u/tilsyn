@@ -46,8 +46,7 @@ export default function EditReportPage() {
   return (
     <ReportForm
       initial={report}
-      heading="Rediger tilsynsrapport"
-      submitLabel="Gem ændringer"
+      mode="edit"
       onSubmit={async (fields, images) => {
         await updateReport(id, fields, images);
         navigate(`/reports/${id}`);

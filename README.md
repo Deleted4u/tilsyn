@@ -59,6 +59,13 @@ Husk: data ligger i den browser eller app-genvej, du bruger. Safari og hjemmesk�
 | Send PDF som e-mail via Base44 | Lav PDF, og del via enhedens delemenu eller download |
 | TanStack Start med serverfunktioner | Ren statisk app (Vite + React Router med `#` i adressen) |
 
+## Rapporttyper, Excel og INFO-tekst
+
+- Appen har tre rapporttyper: **TilsynsRapport**, **Cloud Konfig** (Excel) og **TilsynEL**.
+- Excel-skabelonen ligger i `src/assets/cloud-konfig-v2.xlsx`. Den indeholder **ingen** firma- eller personnavne (kun pladsholderne `{{PRODUKT}}` og `***`). Firma, elektriker og Kunde skrives i appens Indstillinger og lægges først i filen, når den laves på enheden.
+- Skal skabelonen ændres: send den til Claude, så renser den for navne og skjulte metadata, før den lægges i repoet. Gem ikke selv skabelonen i Excel, da Excel skriver dit navn ind i filen igen.
+- INFO-teksten i TilsynEL ligger i `src/content/info-tilsyn-el.txt` (en linje der starter med `# ` bliver en overskrift). Upload en ny version, så opdateres appen.
+
 ## Begrænsninger
 
 - Ingen automatisk synkronisering og ingen login (se øverst).

@@ -55,6 +55,33 @@ Sæt kryds, når punktet er testet. Test både på computer og på iPhone (Safar
 - [ ] "Overskriv" beder om bekræftelse
 - [ ] Importér en tilfældig fil (fx en PDF eller et billede): tydelig fejlbesked, intet ændres
 
+## Rapporttyper (ikoner øverst)
+- [ ] "Ny rapport" åbner den type, der er valgt som Standardrapport i Indstillinger
+- [ ] Tre ikoner (tilsyn, sky, lyn) står øverst til højre ved siden af "Tilbage"; det valgte ikon er udfyldt
+- [ ] Tryk på et andet ikon i en ny rapport: Navn, SL-Nr og Adresse bliver stående, resten af formularen skifter
+- [ ] Åbn en gammel rapport, tryk Rediger, tryk på et andet ikon: en NY rapport åbnes (efter bekræftelse)
+- [ ] "Hent data" henter Navn, SL-Nr og Adresse fra den rapport, man kom fra (eller en valgt rapport)
+- [ ] Gamle rapporter vises som almindelig TilsynsRapport
+- [ ] Forsiden viser Navn, SL-Nr, adresse og et lille ikon for typen på hvert kort
+
+## Profil og Standardrapport (Indstillinger)
+- [ ] Firma, Kunde, Dine initialer og Dit navn kan udfyldes og huskes efter genåbning
+- [ ] Standardrapport kan skiftes mellem tilsyn, Cloud og TilsynEL
+
+## Cloud Konfig (Excel)
+- [ ] Felter: Max tilgængelig Amp, Max forbrug, Tilslutningspunkt (Målerskab), Placering (Terræn), Ladeboks iD
+- [ ] "Tilføj iD" tilføjer flere linjer; de havner i B31, B32, B33 … i Excel-filen
+- [ ] "Lav Excel" giver en .xlsx med navnet "SL-nr - Konfig CLOUD - V2.xlsx" (uden SL-Nr: datoen i stedet)
+- [ ] Firma, elektriker (initialer - navn), SL-Nr, Navn - Adresse og Kunde står de rigtige steder
+- [ ] Filen åbner i Excel/Excel-appen, og de låste felter er stadig låste
+- [ ] "Del" og "Download" virker som med PDF
+
+## TilsynEL
+- [ ] Fire kontrolpunkter med skydeknap (OK), tekst og billeder pr. punkt
+- [ ] INFO: (i) viser teksten, og OK-knappen kan slås til
+- [ ] PDF'en viser kontrolpunkterne øverst (OK / Ikke afkrydset) og punkternes tekst og billeder
+- [ ] Backup og import af en TilsynEL-rapport bevarer afkrydsninger, tekster og billeder pr. punkt
+
 ## Beskeder
 - [ ] Beskeden om, at data ikke synkroniseres automatisk, kan ses på forsiden og under Backup
 

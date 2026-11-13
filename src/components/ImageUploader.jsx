@@ -11,7 +11,7 @@ import { useSettings } from "@/lib/settings";
 
 // images: [{ id, blob, comment, timestamp, persisted? }]
 // Stempler (tid og navn) styres af Indstillinger.
-export default function ImageUploader({ images, setImages, reportName = "" }) {
+export default function ImageUploader({ images, setImages, reportName = "", compact = false }) {
   const pickRef = useRef(null);
   const cameraRef = useRef(null);
   const [busy, setBusy] = useState(false);
@@ -79,9 +79,11 @@ export default function ImageUploader({ images, setImages, reportName = "" }) {
       {error && <p className="text-sm text-destructive">{error}</p>}
 
       {images.length === 0 ? (
+        compact ? null : (
         <div className="rounded-2xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
           Ingen billeder endnu
         </div>
+        )
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {images.map((img) => {
